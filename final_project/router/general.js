@@ -36,99 +36,140 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  //Write your code here
-  // Send the JSON string as a response with a status code of 200
-  return res.status(200).json({Books: books}, null, 2);
+public_users.get('/', function (req, res) {
+  // Simulate an asynchronous operation using a Promise
+  new Promise((resolve, reject) => {
+    // Simulate a delay
+    setTimeout(() => {
+      resolve(books);
+    }, 1000);
+  })
+  .then(books => {
+    // Send the JSON string as a response with a status code of 200
+    return res.status(200).json({ Books: books });
+  })
+  .catch(error => {
+    // Handle any errors
+    return res.status(500).json({ message: "Failed to fetch books list", error: error.message });
+  });
 });
+
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
    // Retrieve the ISBN from the request parameters
-   const isbn = req.params.isbn;
-  
-   // Find the book in the books object using the ISBN
-   const book = books[isbn];
-   
-   // If the book is found, return the book details
-   if (book) {
-     return res.status(200).json(book);
-   } else {
-     // If the book is not found, return a 300 status code with a message
-     return res.status(300).json({message: "Book not found"});
-   }
-  
- });
+  const isbn = req.params.isbn;
+
+  // Simulate an asynchronous operation using a Promise
+  new Promise((resolve, reject) => {
+    // Simulate a delay
+    setTimeout(() => {
+      const book = books[isbn];
+      if (book) {
+        resolve(book);
+      } else {
+        reject(new Error("Book not found"));
+      }
+    }, 1000);
+  })
+  .then(book => {
+    // Send the book details as a response with a status code of 200
+    return res.status(200).json(book);
+  })
+  .catch(error => {
+    // Handle any errors
+    return res.status(404).json({ message: error.message });
+  });
+});
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-  // Retrieve the author from the request parameters
   const author = req.params.author;
-  
-  // Obtain all the keys for the books object
-  const bookKeys = Object.keys(books);
-  
-  // Initialize an array to hold books by the specified author
-  const booksByAuthor = [];
-  
-  // Iterate through the books object and check if the author matches
-  bookKeys.forEach(key => {
-    if (books[key].author === author) {
-      booksByAuthor.push(books[key]);
-    }
-  });
-  
-  // If matching books are found, return them with a status code of 200
-  if (booksByAuthor.length > 0) {
+
+  // Simulate an asynchronous operation using a Promise
+  new Promise((resolve, reject) => {
+    // Simulate a delay
+    setTimeout(() => {
+      const bookKeys = Object.keys(books);
+      const booksByAuthor = [];
+      bookKeys.forEach(key => {
+        if (books[key].author === author) {
+          booksByAuthor.push(books[key]);
+        }
+      });
+      if (booksByAuthor.length > 0) {
+        resolve(booksByAuthor);
+      } else {
+        reject(new Error("No books found by this author"));
+      }
+    }, 1000);
+  })
+  .then(booksByAuthor => {
+    // Send the books by author as a response with a status code of 200
     return res.status(200).json(booksByAuthor);
-  } else {
-  return res.status(300).json({message: "No books found by this author" });
-  }
+  })
+  .catch(error => {
+    // Handle any errors
+    return res.status(404).json({ message: error.message });
+  });
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  // Retrieve the title from the request parameters
   const title = req.params.title;
-  
-  // Obtain all the keys for the books object
-  const bookKeys = Object.keys(books);
-  
-  // Initialize an array to hold books with the specified title
-  const booksByTitle = [];
-  
-  // Iterate through the books object and check if the title matches
-  bookKeys.forEach(key => {
-    if (books[key].title === title) {
-      booksByTitle.push(books[key]);
-    }
-  });
-  
-  // If matching books are found, return them with a status code of 200
-  if (booksByTitle.length > 0) {
+
+  // Simulate an asynchronous operation using a Promise
+  new Promise((resolve, reject) => {
+    // Simulate a delay
+    setTimeout(() => {
+      const bookKeys = Object.keys(books);
+      const booksByTitle = [];
+      bookKeys.forEach(key => {
+        if (books[key].title === title) {
+          booksByTitle.push(books[key]);
+        }
+      });
+      if (booksByTitle.length > 0) {
+        resolve(booksByTitle);
+      } else {
+        reject(new Error("No books found with this title"));
+      }
+    }, 1000);
+  })
+  .then(booksByTitle => {
+    // Send the books by title as a response with a status code of 200
     return res.status(200).json(booksByTitle);
-  } else {
-  return res.status(300).json({message: "No books found with this title" });
-  }
+  })
+  .catch(error => {
+    // Handle any errors
+    return res.status(404).json({ message: error.message });
+  });
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
   const isbn = req.params.isbn;
 
-  // Find the book in the books object using the ISBN
- const book = books[isbn];
- 
- // If the book is found
- if (book) {  
-   return res.status(200).json({ Reviews: book.reviews});
- } else {
-   return res.status(300).json({ message: "Book not found" });
- }
-
+  // Simulate an asynchronous operation using a Promise
+  new Promise((resolve, reject) => {
+    // Simulate a delay
+    setTimeout(() => {
+      const book = books[isbn];
+      if (book) {
+        resolve(book.reviews);
+      } else {
+        reject(new Error("Book not found"));
+      }
+    }, 1000);
+  })
+  .then(reviews => {
+    // Send the book reviews as a response with a status code of 200
+    return res.status(200).json({ Reviews: reviews });
+  })
+  .catch(error => {
+    // Handle any errors
+    return res.status(404).json({ message: error.message });
+  });
 });
 
 module.exports.general = public_users;
